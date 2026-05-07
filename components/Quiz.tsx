@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import type { Question } from "@/types/quiz";
 import type { Therapist } from "@/types/therapist";
 import { Button } from "./ui/button";
@@ -16,6 +17,7 @@ interface QuizProps {
 export default function Quiz({ questions, onComplete }: QuizProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [matchedTherapists, setMatchedTherapists] = useState<Therapist[]>([]);
 
@@ -60,15 +62,22 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
   };
 
   const handleSubmit = () => {
-    const matches = matchTherapists(therapists, answers);
-    setMatchedTherapists(matches);
-    setSubmitted(true);
-    onComplete?.(answers, matches);
+    setIsLoading(true);
+
+    // Simulate a brief loading period
+    setTimeout(() => {
+      const matches = matchTherapists(therapists, answers);
+      setMatchedTherapists(matches);
+      setIsLoading(false);
+      setSubmitted(true);
+      onComplete?.(answers, matches);
+    }, 1500);
   };
 
   const handleReset = () => {
     setAnswers({});
     setSubmitted(false);
+    setIsLoading(false);
     setCurrentIndex(0);
     setMatchedTherapists([]);
   };
@@ -128,11 +137,54 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
     return `${base} border-border opacity-60`;
   };
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center py-16"
+      >
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full mb-6"
+        />
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-lg text-foreground font-medium"
+        >
+          Finding your perfect match...
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="text-muted mt-2"
+        >
+          Analyzing your preferences
+        </motion.p>
+      </motion.div>
+    );
+  }
+
   // Show results after submission
   if (submitted) {
+    const displayTherapists =
+      matchedTherapists.length > 0 ? matchedTherapists : therapists;
+
     return (
-      <div className="w-full max-w-4xl mx-auto">
-        <div className="text-center mb-8">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="w-full max-w-4xl mx-auto"
+      >
+        <div
+          className="text-center mb-8"
+        >
           <h2 className="text-2xl font-bold text-foreground mb-2">
             Your Matched Therapists
           </h2>
@@ -144,19 +196,35 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {(matchedTherapists.length > 0 ? matchedTherapists : therapists).map(
-            (therapist) => (
-              <TherapistCard key={therapist.id} therapist={therapist} />
-            )
-          )}
+          <AnimatePresence>
+            {displayTherapists.map((therapist, index) => (
+              <motion.div
+                key={therapist.id}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.4,
+                  delay: index * 0.1,
+                  ease: "easeOut",
+                }}
+              >
+                <TherapistCard therapist={therapist} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
-        <div className="text-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: displayTherapists.length * 0.1 + 0.3 }}
+          className="text-center"
+        >
           <Button onClick={handleReset} variant="outline">
             Start Over
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 
@@ -238,7 +306,9 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
           {currentIndex < questions.length - 1 ? (
             <Button onClick={handleNext}>Next</Button>
           ) : (
-            <Button onClick={handleSubmit}>Find My Therapists</Button>
+            <Button onClick={handleSubmit} disabled={isLoading}>
+              Find My Therapists
+            </Button>
           )}
         </div>
       </div>

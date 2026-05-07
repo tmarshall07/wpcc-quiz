@@ -10,4 +10,5 @@ export interface Therapist {
   availability: ("in-person" | "telehealth")[];
   therapies: string[];
   specialties: string[];
+  slug: string;
 }

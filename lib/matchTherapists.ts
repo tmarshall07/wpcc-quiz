@@ -1,11 +1,16 @@
 import type { Therapist } from "@/types/therapist";
+import {
+  QuestionId,
+  ModeOption,
+  LanguageOption,
+} from "@/types/quiz";
 
 export interface QuizAnswers {
-  mode?: string[];        // q1: "a" (in-person) or "b" (telehealth)
-  identity?: string[];    // q2: "man" or "woman"
-  language?: string[];    // q3: "english" or "spanish"
-  therapies?: string[];   // q4: therapy types
-  specialties?: string[]; // q5: specialties/issues to work through
+  mode?: string[];
+  identity?: string[];
+  language?: string[];
+  therapies?: string[];
+  specialties?: string[];
 }
 
 export function matchTherapists(
@@ -13,18 +18,18 @@ export function matchTherapists(
   answers: Record<string, string[]>
 ): Therapist[] {
   const quizAnswers: QuizAnswers = {
-    mode: answers["q1"],
-    identity: answers["q2"],
-    language: answers["q3"],
-    therapies: answers["q4"],
-    specialties: answers["q5"],
+    mode: answers[QuestionId.MODE],
+    identity: answers[QuestionId.IDENTITY],
+    language: answers[QuestionId.LANGUAGE],
+    therapies: answers[QuestionId.THERAPY_TYPE],
+    specialties: answers[QuestionId.SPECIALTIES],
   };
 
   return therapists.filter((therapist) => {
     // Filter by availability/mode
     if (quizAnswers.mode && quizAnswers.mode.length > 0) {
-      const wantsInPerson = quizAnswers.mode.includes("a");
-      const wantsTelehealth = quizAnswers.mode.includes("b");
+      const wantsInPerson = quizAnswers.mode.includes(ModeOption.IN_PERSON);
+      const wantsTelehealth = quizAnswers.mode.includes(ModeOption.TELEHEALTH);
 
       const hasInPerson = therapist.availability.includes("in-person");
       const hasTelehealth = therapist.availability.includes("telehealth");
@@ -35,23 +40,25 @@ export function matchTherapists(
 
     // Filter by clinician identity
     if (quizAnswers.identity && quizAnswers.identity.length > 0) {
-      const wantedIdentity = quizAnswers.identity[0]; // single choice
-      if (therapist.identity && therapist.identity !== wantedIdentity) {
-        return false;
-      }
+      const matchesIdentity = quizAnswers.identity.some(
+        (id) => therapist.identity === id
+      );
+      if (!matchesIdentity) return false;
     }
 
     // Filter by language
     if (quizAnswers.language && quizAnswers.language.length > 0) {
-      const wantedLanguage = quizAnswers.language[0]; // single choice
       const languageMap: Record<string, string> = {
-        english: "English",
-        spanish: "Spanish",
+        [LanguageOption.ENGLISH]: "English",
+        [LanguageOption.SPANISH]: "Spanish",
       };
-      const languageName = languageMap[wantedLanguage];
-      if (languageName && !therapist.languages.includes(languageName)) {
-        return false;
-      }
+
+      const matchesLanguage = quizAnswers.language.some((lang) => {
+        const languageName = languageMap[lang];
+        return languageName && therapist.languages.includes(languageName);
+      });
+
+      if (!matchesLanguage) return false;
     }
 
     // Filter by therapy types (if therapist has any specified)

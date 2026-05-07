@@ -14,7 +14,7 @@ export default function Header() {
           priority
         />
         <Button asChild>
-          <a href="https://wpcc.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.wildpoppycounseling.com/">
             Visit our Website
           </a>
         </Button>

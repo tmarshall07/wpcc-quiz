@@ -44,9 +44,11 @@ export default function TherapistCard({ therapist }: TherapistCardProps) {
         ))}
       </div>
 
-      <Button size="sm" className="w-full">
-        View Profile
-      </Button>
+      <a href={`https://www.wildpoppycounseling.com/team/${therapist.slug}`}>
+        <Button size="sm" className="w-full">
+          View Profile
+        </Button>
+        </a>
     </div>
   );
 }
