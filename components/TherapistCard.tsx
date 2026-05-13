@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Therapist } from "@/types/therapist";
 import { Button } from "@/components/ui/button";
+import SimplePracticeWidget from "@/components/SimplePracticeWidget";
 
 interface TherapistCardProps {
   therapist: Therapist;
@@ -44,11 +45,20 @@ export default function TherapistCard({ therapist }: TherapistCardProps) {
         ))}
       </div>
 
+      {therapist.clinicianId && (
+        <div className="mb-3 w-full">
+          <SimplePracticeWidget
+            clinicianId={therapist.clinicianId}
+            scopeUri={therapist.slug}
+          />
+        </div>
+      )}
+
       <a href={`https://www.wildpoppycounseling.com/team/${therapist.slug}`}>
-        <Button size="sm" className="w-full">
+        <Button size="sm" className="w-full" variant="outline">
           View Profile
         </Button>
-        </a>
+      </a>
     </div>
   );
 }

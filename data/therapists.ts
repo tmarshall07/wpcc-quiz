@@ -18,7 +18,8 @@ export const therapists: Therapist[] = [
     availability: ["in-person", "telehealth"],
     therapies: [],
     specialties: [],
-    slug: 'emma-shandy-anway'
+    slug: 'emma-shandy-anway',
+    clinicianId: '913239',
   },
   {
     id: "sandra-olkowski",
@@ -30,6 +31,7 @@ export const therapists: Therapist[] = [
     therapies: [],
     specialties: [],
     slug: 'sandra-olkowski',
+    clinicianId: '2018838',
   },
   {
     id: "jesus-anthony-cedillo",
@@ -41,7 +43,8 @@ export const therapists: Therapist[] = [
     availability: ["in-person", "telehealth"],
     therapies: [],
     specialties: [],
-    slug: 'anthony-cedillo'
+    slug: 'anthony-cedillo',
+    clinicianId: '1984251',
   },
   {
     id: "diana-silvestre",
@@ -65,7 +68,8 @@ export const therapists: Therapist[] = [
     availability: ["in-person", "telehealth"],
     therapies: [],
     specialties: [],
-    slug: 'zoe-deibel-tayler'
+    slug: 'zoe-deibel-tayler',
+    clinicianId: '1911535'
   },
   {
     id: "john-mckelvey",
@@ -77,6 +81,7 @@ export const therapists: Therapist[] = [
     availability: ["in-person", "telehealth"],
     therapies: [],
     specialties: [],
-    slug: 'john-mckelvey'
+    slug: 'john-mckelvey',
+    clinicianId: '1911536',
   },
 ];

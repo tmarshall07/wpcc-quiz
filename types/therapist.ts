@@ -11,4 +11,5 @@ export interface Therapist {
   therapies: string[];
   specialties: string[];
   slug: string;
+  clinicianId?: string;
 }
