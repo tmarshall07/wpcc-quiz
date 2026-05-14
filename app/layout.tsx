@@ -22,8 +22,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "WPCC Quiz",
-  description: "WPCC Quiz Application",
+  title: "Quiz | Wild Poppy Counseling Collective",
 };
 
 export default function RootLayout({
