@@ -22,7 +22,7 @@ export default function SimplePracticeWidget({
 
   return (
     <>
-      <div className="spwidget-button-wrapper">
+      <div className="spwidget-button-wrapper w-full">
         <a
           href={href}
           data-spwidget-scope-id={SCOPE_ID}
@@ -31,8 +31,9 @@ export default function SimplePracticeWidget({
           data-spwidget-type="OAR"
           data-spwidget-clinician-id={clinicianId}
           data-spwidget-autobind
+          className="w-full"
         >
-          <Button>
+          <Button className="w-full">
             {label}
           </Button>
         </a>
