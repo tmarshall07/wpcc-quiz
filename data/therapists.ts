@@ -56,7 +56,8 @@ export const therapists: Therapist[] = [
     availability: ["in-person", "telehealth"],
     therapies: [],
     specialties: [],
-    slug: 'diana-silvestre'
+    slug: 'diana-silvestre',
+    clinicianId: '1980370'
   },
   {
     id: "zoe-deibel-tayler",
