@@ -18,6 +18,7 @@ export enum ModeOption {
 export enum IdentityOption {
   MAN = "man",
   WOMAN = "woman",
+  NO_PREFERENCE = "no-preference",
 }
 
 export enum LanguageOption {

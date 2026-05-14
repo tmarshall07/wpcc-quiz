@@ -13,7 +13,7 @@ const sampleQuestions: Question[] = [
   {
     id: QuestionId.MODE,
     type: "multiple",
-    question: "How would you prefer to receive therapy?",
+    question: "How would you prefer to attend therapy?",
     options: [
       { id: ModeOption.IN_PERSON, text: "In person" },
       { id: ModeOption.TELEHEALTH, text: "Telehealth" },
@@ -21,17 +21,18 @@ const sampleQuestions: Question[] = [
   },
   {
     id: QuestionId.IDENTITY,
-    type: "multiple",
-    question: "What are your preferred therapist gender identities?",
+    type: "single",
+    question: "What gender identity do you prefer for your therapist?",
     options: [
-      { id: IdentityOption.MAN, text: "Man" },
-      { id: IdentityOption.WOMAN, text: "Woman" },
+      { id: IdentityOption.MAN, text: "Male" },
+      { id: IdentityOption.WOMAN, text: "Female" },
+      { id: IdentityOption.NO_PREFERENCE, text: "No Preference" },
     ],
   },
   {
     id: QuestionId.LANGUAGE,
-    type: "multiple",
-    question: "What are your preferred languages?",
+    type: "single",
+    question: "What is your preferred language?",
     options: [
       { id: LanguageOption.ENGLISH, text: "English" },
       { id: LanguageOption.SPANISH, text: "Spanish" },

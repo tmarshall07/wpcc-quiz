@@ -3,6 +3,7 @@ import {
   QuestionId,
   ModeOption,
   LanguageOption,
+  IdentityOption,
 } from "@/types/quiz";
 
 export interface QuizAnswers {
@@ -40,10 +41,13 @@ export function matchTherapists(
 
     // Filter by clinician identity
     if (quizAnswers.identity && quizAnswers.identity.length > 0) {
-      const matchesIdentity = quizAnswers.identity.some(
-        (id) => therapist.identity === id
-      );
-      if (!matchesIdentity) return false;
+      const hasNoPreference = quizAnswers.identity.includes(IdentityOption.NO_PREFERENCE);
+      if (!hasNoPreference) {
+        const matchesIdentity = quizAnswers.identity.some(
+          (id) => therapist.identity === id
+        );
+        if (!matchesIdentity) return false;
+      }
     }
 
     // Filter by language
